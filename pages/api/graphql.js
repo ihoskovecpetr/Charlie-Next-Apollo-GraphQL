@@ -1,11 +1,8 @@
 import { ApolloServer } from "apollo-server-micro";
 import { schema } from "../../apollo/schema";
-import { pubsub } from "../../apollo/resolvers";
 
 const apolloServer = new ApolloServer({
-  schema,
-  context: () => ({ pubsub }),
-  subscriptions: "api/subs"
+  schema
 });
 
 console.log("Hitting endpoint /graphql");

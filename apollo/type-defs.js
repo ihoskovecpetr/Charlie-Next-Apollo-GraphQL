@@ -7,10 +7,6 @@ export const typeDefs = gql`
     status: String!
   }
 
-  type Subscription {
-    newUser: User!
-  }
-
   type Query {
     viewer: User
   }

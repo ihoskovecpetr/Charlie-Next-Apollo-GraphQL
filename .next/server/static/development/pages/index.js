@@ -101,7 +101,7 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -339,27 +339,13 @@ function createIsomorphLink() {
 /*!*****************************!*\
   !*** ./apollo/resolvers.js ***!
   \*****************************/
-/*! exports provided: pubsub, resolvers */
+/*! exports provided: resolvers */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "pubsub", function() { return pubsub; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resolvers", function() { return resolvers; });
-const {
-  PubSub
-} = __webpack_require__(/*! apollo-server */ "apollo-server");
-
-const NEW_USER = "NEW_USER";
-const pubsub = new PubSub();
 const resolvers = {
-  Subscription: {
-    newUser: {
-      subscribe: (_, __, {
-        pubsub
-      }) => pubsub.asyncIterator(NEW_USER)
-    }
-  },
   Query: {
     viewer(_parent, _args, _context, _info) {
       return {
@@ -371,15 +357,8 @@ const resolvers = {
 
   },
   Mutation: {
-    newUser(_parent, _args, {
-      pubsub
-    }, _info) {
+    newUser(_parent, _args, _context, _info) {
       console.log("_args: ", _args);
-      pubsub.publish(NEW_USER, {
-        id: 101,
-        name: "John Subscriber",
-        status: "cacheding"
-      });
       return {
         id: 123,
         name: _args.newUser.name,
@@ -434,10 +413,6 @@ const typeDefs = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a`
     id: ID!
     name: String!
     status: String!
-  }
-
-  type Subscription {
-    newUser: User!
   }
 
   type Query {
@@ -6025,7 +6000,7 @@ const Index = () => {
 
 /***/ }),
 
-/***/ 4:
+/***/ 3:
 /*!******************************!*\
   !*** multi ./pages/index.js ***!
   \******************************/
@@ -6100,17 +6075,6 @@ module.exports = require("apollo-link");
 /***/ (function(module, exports) {
 
 module.exports = require("apollo-link-schema");
-
-/***/ }),
-
-/***/ "apollo-server":
-/*!********************************!*\
-  !*** external "apollo-server" ***!
-  \********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = require("apollo-server");
 
 /***/ }),
 

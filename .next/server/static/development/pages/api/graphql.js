@@ -88,57 +88,89 @@ module.exports =
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 1:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__("dCYn");
-
-
-/***/ }),
-
-/***/ "9OSe":
-/***/ (function(module, exports) {
-
-module.exports = require("graphql-tools");
-
-/***/ }),
-
-/***/ "GW0h":
-/***/ (function(module, exports) {
-
-module.exports = require("apollo-server");
-
-/***/ }),
-
-/***/ "UETC":
+/***/ "./apollo/resolvers.js":
+/*!*****************************!*\
+  !*** ./apollo/resolvers.js ***!
+  \*****************************/
+/*! exports provided: resolvers */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resolvers", function() { return resolvers; });
+const resolvers = {
+  Query: {
+    viewer(_parent, _args, _context, _info) {
+      return {
+        id: 1,
+        name: "John Smith XoX",
+        status: "cached"
+      };
+    }
 
-// EXTERNAL MODULE: external "graphql-tools"
-var external_graphql_tools_ = __webpack_require__("9OSe");
+  },
+  Mutation: {
+    newUser(_parent, _args, _context, _info) {
+      console.log("_args: ", _args);
+      return {
+        id: 123,
+        name: _args.newUser.name,
+        status: _args.newUser.status
+      };
+    }
 
-// EXTERNAL MODULE: external "graphql-tag"
-var external_graphql_tag_ = __webpack_require__("txk1");
-var external_graphql_tag_default = /*#__PURE__*/__webpack_require__.n(external_graphql_tag_);
+  }
+};
 
-// CONCATENATED MODULE: ./apollo/type-defs.js
+/***/ }),
 
-const typeDefs = external_graphql_tag_default.a`
+/***/ "./apollo/schema.js":
+/*!**************************!*\
+  !*** ./apollo/schema.js ***!
+  \**************************/
+/*! exports provided: schema */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "schema", function() { return schema; });
+/* harmony import */ var graphql_tools__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! graphql-tools */ "graphql-tools");
+/* harmony import */ var graphql_tools__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(graphql_tools__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _type_defs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./type-defs */ "./apollo/type-defs.js");
+/* harmony import */ var _resolvers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./resolvers */ "./apollo/resolvers.js");
+
+
+
+const schema = Object(graphql_tools__WEBPACK_IMPORTED_MODULE_0__["makeExecutableSchema"])({
+  typeDefs: _type_defs__WEBPACK_IMPORTED_MODULE_1__["typeDefs"],
+  resolvers: _resolvers__WEBPACK_IMPORTED_MODULE_2__["resolvers"]
+});
+
+/***/ }),
+
+/***/ "./apollo/type-defs.js":
+/*!*****************************!*\
+  !*** ./apollo/type-defs.js ***!
+  \*****************************/
+/*! exports provided: typeDefs */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "typeDefs", function() { return typeDefs; });
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! graphql-tag */ "graphql-tag");
+/* harmony import */ var graphql_tag__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(graphql_tag__WEBPACK_IMPORTED_MODULE_0__);
+
+const typeDefs = graphql_tag__WEBPACK_IMPORTED_MODULE_0___default.a`
   type User {
     id: ID!
     name: String!
     status: String!
-  }
-
-  type Subscription {
-    newUser: User!
   }
 
   type Query {
@@ -155,92 +187,26 @@ const typeDefs = external_graphql_tag_default.a`
     status: String!
   }
 `;
-// EXTERNAL MODULE: ./apollo/resolvers.js
-var resolvers = __webpack_require__("acRi");
-
-// CONCATENATED MODULE: ./apollo/schema.js
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "schema", function() { return schema; });
-
-
-
-const schema = Object(external_graphql_tools_["makeExecutableSchema"])({
-  typeDefs: typeDefs,
-  resolvers: resolvers["b" /* resolvers */]
-});
 
 /***/ }),
 
-/***/ "acRi":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return pubsub; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return resolvers; });
-const {
-  PubSub
-} = __webpack_require__("GW0h");
-
-const NEW_USER = "NEW_USER";
-const pubsub = new PubSub();
-const resolvers = {
-  Subscription: {
-    newUser: {
-      subscribe: (_, __, {
-        pubsub
-      }) => pubsub.asyncIterator(NEW_USER)
-    }
-  },
-  Query: {
-    viewer(_parent, _args, _context, _info) {
-      return {
-        id: 1,
-        name: "John Smith XoX",
-        status: "cached"
-      };
-    }
-
-  },
-  Mutation: {
-    newUser(_parent, _args, {
-      pubsub
-    }, _info) {
-      console.log("_args: ", _args);
-      pubsub.publish(NEW_USER, {
-        id: 101,
-        name: "John Subscriber",
-        status: "cacheding"
-      });
-      return {
-        id: 123,
-        name: _args.newUser.name,
-        status: _args.newUser.status
-      };
-    }
-
-  }
-};
-
-/***/ }),
-
-/***/ "dCYn":
+/***/ "./pages/api/graphql.js":
+/*!******************************!*\
+  !*** ./pages/api/graphql.js ***!
+  \******************************/
+/*! exports provided: config, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "config", function() { return config; });
-/* harmony import */ var apollo_server_micro__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("re1k");
+/* harmony import */ var apollo_server_micro__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! apollo-server-micro */ "apollo-server-micro");
 /* harmony import */ var apollo_server_micro__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(apollo_server_micro__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _apollo_schema__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("UETC");
-/* harmony import */ var _apollo_resolvers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__("acRi");
-
+/* harmony import */ var _apollo_schema__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../apollo/schema */ "./apollo/schema.js");
 
 
 const apolloServer = new apollo_server_micro__WEBPACK_IMPORTED_MODULE_0__["ApolloServer"]({
-  schema: _apollo_schema__WEBPACK_IMPORTED_MODULE_1__["schema"],
-  context: () => ({
-    pubsub: _apollo_resolvers__WEBPACK_IMPORTED_MODULE_2__[/* pubsub */ "a"]
-  }),
-  subscriptions: "api/subs"
+  schema: _apollo_schema__WEBPACK_IMPORTED_MODULE_1__["schema"]
 });
 console.log("Hitting endpoint /graphql");
 const config = {
@@ -254,18 +220,50 @@ const config = {
 
 /***/ }),
 
-/***/ "re1k":
+/***/ 5:
+/*!************************************!*\
+  !*** multi ./pages/api/graphql.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! /Users/macuser/Desktop/Demo/api-routes-apollo-server-and-client/pages/api/graphql.js */"./pages/api/graphql.js");
+
+
+/***/ }),
+
+/***/ "apollo-server-micro":
+/*!**************************************!*\
+  !*** external "apollo-server-micro" ***!
+  \**************************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 module.exports = require("apollo-server-micro");
 
 /***/ }),
 
-/***/ "txk1":
+/***/ "graphql-tag":
+/*!******************************!*\
+  !*** external "graphql-tag" ***!
+  \******************************/
+/*! no static exports found */
 /***/ (function(module, exports) {
 
 module.exports = require("graphql-tag");
 
+/***/ }),
+
+/***/ "graphql-tools":
+/*!********************************!*\
+  !*** external "graphql-tools" ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("graphql-tools");
+
 /***/ })
 
 /******/ });
+//# sourceMappingURL=graphql.js.map
