@@ -1,0 +1,1 @@
+{"ast":null,"code":"import React from \"react\";\nvar __jsx = React.createElement;\nimport Link from 'next/link';\nexport default (() => __jsx(\"div\", null, \"This is a static page goto\", ' ', __jsx(Link, {\n  href: \"/\"\n}, __jsx(\"a\", null, \"dynamic\")), ' ', \"page.\"));","map":null,"metadata":{},"sourceType":"module"}

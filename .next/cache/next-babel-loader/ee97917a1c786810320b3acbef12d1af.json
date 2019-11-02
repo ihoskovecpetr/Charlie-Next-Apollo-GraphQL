@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { makeExecutableSchema } from \"graphql-tools\";\nimport { typeDefs } from \"./type-defs\";\nimport { resolvers } from \"./resolvers\";\nexport const schema = makeExecutableSchema({\n  typeDefs,\n  resolvers\n});","map":null,"metadata":{},"sourceType":"module"}
