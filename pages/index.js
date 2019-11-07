@@ -1,36 +1,64 @@
-import { withApollo } from '../apollo/client'
-import gql from 'graphql-tag'
-import Link from 'next/link'
-import { useQuery } from '@apollo/react-hooks'
+import { withApollo } from "../apollo/client";
+import gql from "graphql-tag";
+import Link from "next/link";
+import Head from "next/head";
+import { useQuery } from "@apollo/react-hooks";
+import fetch from "isomorphic-unfetch";
 
-const ViewerQuery = gql`
-  query ViewerQuery {
-    viewer {
+import Layout from "../components/Layout";
+
+const showUsersQuery = gql`
+  query {
+    showUsers {
       id
       name
-      status
+      email
     }
   }
-`
+`;
+//const isServer = typeof window === "undefined";
 
-const Index = () => {
-  const {
-    data: { viewer }
-  } = useQuery(ViewerQuery)
-
-  if (viewer) {
+const Index = props => {
+  const { data } = useQuery(showUsersQuery);
+  console.log("returning Index", data);
+  if (data.showUsers) {
+    console.log("If pass");
     return (
-      <div>
-        You're signed in as {viewer.name} and you're {viewer.status} goto{' '}
-        <Link href='/about'>
-          <a>static</a>
-        </Link>{' '}
-        page.
-      </div>
-    )
+      <Layout>
+        <h1>Batman TV Shows</h1>
+        {data.showUsers.map(item => (
+          <p>{item.name}</p>
+        ))}
+        {/* <ul>
+          {props.shows.map(show => (
+            <li key={show.id}>
+              <Link href="/p/[id]" as={`/p/${show.id}`}>
+                <a>{show.name}</a>
+              </Link>
+            </li>
+          ))}
+        </ul> */}
+      </Layout>
+    );
+  } else {
+    return (
+      <Layout>
+        <h1>Batman TV Shows</h1>
+        no data yet
+      </Layout>
+    );
   }
+};
 
-  return null
-}
+// Index.getInitialProps = async function() {
+//   const res = await fetch("https://api.tvmaze.com/search/shows?q=batman");
+//   const data = await res.json();
 
-export default withApollo(Index)
+//   console.log(`Show data fetched. Count: ${data.length}`);
+
+//   return {
+//     shows: data.map(entry => entry.show)
+//   };
+// };
+
+export default withApollo(Index);

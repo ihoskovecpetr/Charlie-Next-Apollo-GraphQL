@@ -1,18 +1,34 @@
+//const Vote = require("./Models/Vote.js");
+const User = require("./Models/User.js");
+
 export const resolvers = {
   Query: {
-    viewer(_parent, _args, _context, _info) {
-      return { id: 1, name: "John Smith XoX", status: "cached" };
+    showUsers: async (_parent, _args, _context) => {
+      try {
+        const result = await User.find({});
+        return result;
+      } catch (err) {
+        throw err;
+      }
     }
   },
   Mutation: {
-    newUser(_parent, _args, _context, _info) {
+    newUser: async (_parent, _args, _context, _info) => {
       console.log("_args: ", _args);
+      try {
+        console.log("try votes async");
+        const newUser = new User({
+          name: _args.newUser.name,
+          picture: _args.newUser.picture,
+          email: _args.newUser.email,
+          password: _args.newUser.password
+        });
 
-      return {
-        id: 123,
-        name: _args.newUser.name,
-        status: _args.newUser.status
-      };
+        const result = await newUser.save();
+        return result;
+      } catch (err) {
+        throw err;
+      }
     }
   }
 };

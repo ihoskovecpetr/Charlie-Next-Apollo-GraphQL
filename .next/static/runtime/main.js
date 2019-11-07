@@ -5119,7 +5119,7 @@ function connect(options) {
       error.name = err.name;
       error.stack = err.stack; // __NEXT_DIST_DIR is provided by webpack
 
-      (0, _sourceMapSupport.rewriteStacktrace)(error, "/Users/macuser/Desktop/Demo/api-routes-apollo-server-and-client/.next");
+      (0, _sourceMapSupport.rewriteStacktrace)(error, "/Users/macuser/Desktop/code/api-routes-apollo-server-and-client/.next");
       return error;
     }
   };
